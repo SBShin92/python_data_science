@@ -1,9 +1,13 @@
 from typing import Union
-
 from fastapi import FastAPI
+
+from routers.todo import router as todo_router
+from routers.params import router as params_router
 
 app = FastAPI()
 
+app.include_router(todo_router)
+app.include_router(params_router)
 
 @app.get("/", summary="인사", description="인사 메시지")
 def read_root():
