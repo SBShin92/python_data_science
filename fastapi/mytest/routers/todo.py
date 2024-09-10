@@ -22,9 +22,19 @@ async def create_todo(todo: todo_schema.Todo):
 
 
 @router.put("/todos/{id}")
-async def update_todo(id):
-    pass
-
+async def update_todo(id: int=Path(
+    title="Todo Id",
+    description="수정할 Todo Id",
+    ge=1,
+    le=100
+), updated_todo: todo_schema.Todo = None):
+    for node in todos:
+        if node.id == id:
+            node.title = updated_todo.title
+            node.done = updated_todo.done
+            return node
+    raise HTTPException(status_code=404, detail="해당 Todo가 존재하지 않습니다.")
+  
 
 @router.delete("/todos/{id}")
 async def delete_todo(id: int = Path(..., gt=0)):
